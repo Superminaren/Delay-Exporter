@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from prometheus_client import start_http_server, Gauge, Counter
+import sys
 import time
 import APIHandler as APIHandler
 import Logger
@@ -45,8 +46,15 @@ def update_exporter():
         delay_count.labels(transportMethod=method).inc(API.get_delay_count(method))
 
 def get_settings():
+
+    # Changes where to load in config from based off system arguments.
+    if len(sys.argv) > 1: #If argument is supplied
+        LOG_LOCATION=sys.argv[1]
+        print(LOG_LOCATION)
+    #
+
     config.sections()
-    config.read('config.ini')
+    config.read(LOG_LOCATION)
     try:
         for var in settings:
             if var not in config['EXPORTER']:

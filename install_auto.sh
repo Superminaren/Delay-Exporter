@@ -10,8 +10,10 @@ SCRIPT_DIR="/opt/"
 CONFIG_DIR="/etc"
 PROJECT_NAME="prometheus-sl-exporter"
 PROJECT_DIR=$PWD
+PROJECT_USERNAME="prometheus-sl-exporter"
 
 
+adduser --disabled-password --gecos "" $PROJECT_USERNAME
 #Install requirements for python
 pip install -r requirements.txt
 
@@ -32,7 +34,7 @@ cp $PWD/*.py $SCRIPT_DIR/$PROJECT_NAME/
 
 
 # Copying service to systemd
-cp $PWD/config/$PROJECT_NAME.service $SERVICE_DIR/
+cp $PWD/config/$PROJECT_NAME-user.service $SERVICE_DIR/$PROJECT_NAME.service
 
 # Copying config to etc
 cp $PWD/config/config.ini $CONFIG_DIR/$PROJECT_NAME.conf
