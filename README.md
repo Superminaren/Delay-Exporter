@@ -1,4 +1,7 @@
 # Delay-Exporter
+
+#NOT FINISHED
+
  Prometheus exporter for Stockholm County Bus traffic
 
  Included is a service file for systemd.
