@@ -10,7 +10,7 @@ SCRIPT_DIR="/opt"
 CONFIG_DIR="/etc"
 PROJECT_NAME="prometheus-sl-exporter"
 PROJECT_DIR=$PWD
-PROJECT_USERNAME="prometheus-sl-exporter"
+PROJECT_USERNAME="prometheus"
 
 
 adduser --disabled-password --gecos "" $PROJECT_USERNAME
@@ -38,8 +38,6 @@ cp $PWD/config/$PROJECT_NAME-user.service $SERVICE_DIR/$PROJECT_NAME.service
 
 # Copying config to etc
 cp $PWD/config/config.ini $CONFIG_DIR/$PROJECT_NAME.conf
-
-#TODO
 
 
 systemctl daemon-reload

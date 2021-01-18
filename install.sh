@@ -37,8 +37,6 @@ cp $PWD/config/$PROJECT_NAME.service $SERVICE_DIR/
 # Copying config to etc
 cp $PWD/config/config.ini $CONFIG_DIR/$PROJECT_NAME.conf
 
-#TODO
-
 
 systemctl daemon-reload
 systemctl enable $PROJECT_NAME
