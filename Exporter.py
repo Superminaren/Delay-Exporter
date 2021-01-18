@@ -12,6 +12,7 @@ PORT = 8000
 SITEID = 8254 #Location ID From "SL Platsinfo" API.
 UPDATE_TIME_MINUTES = 5 # Recommended to not update more often than 5 minutes due to limited API Calls
 LOG_LEVEL = 0 #0 = Debug, 1 = Info, 2 = Warnings, 3 = Critical
+#LOG_LOCATION = "/opt/prometheus-sl-exporter/config.ini"
 LOG_LOCATION = "./config.ini"
 
 
