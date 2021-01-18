@@ -6,7 +6,7 @@ fi
 
 SERVICE_DIR="/etc/systemd/system"
 INSTALL_DIR="/usr/local/bin"
-SCRIPT_DIR="/opt/"
+SCRIPT_DIR="/opt"
 CONFIG_DIR="/etc"
 PROJECT_NAME="prometheus-sl-exporter"
 PROJECT_DIR=$PWD
