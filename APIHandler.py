@@ -11,11 +11,11 @@ class APIHandler:
 	APIKEY = ""
 	PORT = 8000
 	SITEID = 8254
+	UPDATE_TIME_MINUTES = 60
 	TIMEFORMAT = '%Y-%m-%dT%H:%M:%S'
 
 	DELAY_TIME = 60 # Delay time in seconds required for something to be considered delayed.
-
-	#URL = "https://api.sl.se/api2/realtimedeparturesV4.json?key=95c536474a7c472bb4408b7d5749ccce&siteid=8254&timewindow=60"
+	templateURL = "https://api.sl.se/api2/realtimedeparturesV4.json?key=<KEY>&siteid=<SITEID>&timewindow=<TIMEWINDOW>"
 	#URL = "https://api.sl.se/api2/realtimedeparturesV4.json?key=APIKEY&siteid=SITEID&timewindow=60"
 	#URL.replace("APIKEY",APIKEY)
 
@@ -30,7 +30,9 @@ class APIHandler:
 		self.data = self.__get_json_data(siteid)
 
 	#Run update before getting data
-	def update(self, SITE):
+	def update(self, SITE, UPDATE_TIME_MINUTES):
+		self.URL = self.templateURL.replace("<KEY>", self.APIKEY).replace("<SITEID>", str(self.SITEID)).replace("<TIMEWINDOW>", str(self.UPDATE_TIME_MINUTES))
+		print(self.URL)
 		self.log.debug("Updating API Data")
 		self.SITEID=SITE
 		data = self.__get_json_data(self.SITEID)
