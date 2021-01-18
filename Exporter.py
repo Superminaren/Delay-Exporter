@@ -24,10 +24,8 @@ delay_count = Counter('traffic_delay_count','Average traffic delay over next 60 
 
 #Class instances
 API = APIHandler.APIHandler()
-log = Logger.Logger(LOG_LEVEL)
+log = Logger.Logger(LOG_LEVEL) #
 
-def __init__(self):
-    print("Init")
 
 #if __name__ == '__main__':
 def run():

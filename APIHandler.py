@@ -58,7 +58,7 @@ class APIHandler:
 
 
 
-
+	# Returns the average of all delays for a specified transport method
 	def get_average_delay(self, transport):
 		count = 0
 		total = 0
@@ -69,17 +69,20 @@ class APIHandler:
 				count = count + 1
 				total = total + date.seconds;
 		if count == 0:
-			return 0;
+			return 0
 		else:
-			return total/count;
+			return total/count
 
 
-	#Returns the amount of delays over the defined limit
+	# Returns the amount of delays over the defined limit
 	def get_delay_count(self,transport):
 		count = 0
 		for x in self.data['ResponseData'][transport]:
 			date = self.__parse_time(x['ExpectedDateTime']) - self.__parse_time(x['TimeTabledDateTime'])
 			if (date.seconds > self.DELAY_TIME):
 				count = count + 1
-		return count;
+		return count
 
+	# Returns the amount of any transport method per hour.
+	def get_count(self, transport):
+		return 0
