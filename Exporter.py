@@ -11,10 +11,9 @@ import configparser
 
 PORT = 8000
 SITEID = 8254 #Location ID From "SL Platsinfo" API.
-UPDATE_TIME_MINUTES = 5 # Recommended to not update more often than 5 minutes due to limited API Calls
+UPDATE_TIME_MINUTES = 60 # Recommended to not update more often than 5 minutes due to limited API Calls
 LOG_LEVEL = 0 #0 = Debug, 1 = Info, 2 = Warnings, 3 = Critical
-#LOG_LOCATION = "/etc/prometheus-sl-exporter.conf"
-LOG_LOCATION = "/etc/prometheus-sl-exporter.conf"
+LOG_LOCATION = "./config.ini"
 
 
 settings = {"APIKey", "Port", "SiteID", "LogLevel"}
@@ -40,7 +39,7 @@ def run():
         time.sleep(UPDATE_TIME_MINUTES*60) # Sleep for an hour before next update TODO Change value to 3600 for production
 
 def update_exporter():
-    API.update(SITEID, UPDATE_TIME_MINUTES)
+    API.update(config['EXPORTER']['SiteID'], UPDATE_TIME_MINUTES)
     for method in transportMethods:
         delay_time.labels(transportMethod=method).set(API.get_average_delay(method))
         delay_count.labels(transportMethod=method).inc(API.get_delay_count(method))
@@ -51,8 +50,11 @@ def get_settings():
     if len(sys.argv) > 1: #If argument is supplied
         LOG_LOCATION=sys.argv[1]
         print(LOG_LOCATION)
+    else:
+        LOG_LOCATION="./config.ini"
     #
 
+    #
     config.sections()
     config.read(LOG_LOCATION)
     try:
