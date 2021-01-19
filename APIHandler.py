@@ -36,7 +36,7 @@ class APIHandler:
 		self.log.debug("Updating API Data")
 		self.SITEID=SITE
 		data = self.__get_json_data(self.SITEID)
-		return data;
+		return data
 
 
 
@@ -69,7 +69,7 @@ class APIHandler:
 			date = self.__parse_time(x['ExpectedDateTime'])-self.__parse_time(x['TimeTabledDateTime'])
 			if (date.seconds>0):
 				count = count + 1
-				total = total + date.seconds;
+				total = total + date.seconds
 		if count == 0:
 			return 0
 		else:
@@ -87,4 +87,7 @@ class APIHandler:
 
 	# Returns the amount of any transport method per hour.
 	def get_count(self, transport):
-		return 0
+		count = 0
+		for x in self.data['ResponseData'][transport]:
+			count = count + 1
+		return count

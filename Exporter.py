@@ -52,9 +52,7 @@ def get_settings():
         print(LOG_LOCATION)
     else:
         LOG_LOCATION="./config.ini"
-    #
 
-    #
     config.sections()
     config.read(LOG_LOCATION)
     try:

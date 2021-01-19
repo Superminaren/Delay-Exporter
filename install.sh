@@ -18,8 +18,6 @@ pip install -r requirements.txt
 echo "COPY $PROJECT_NAME.sh"
 
 
-cp $PWD/$PROJECT_NAME.sh $INSTALL_DIR/$PROJECT_NAME
-
 # Making binary executable
 chmod +x $INSTALL_DIR/$PROJECT_NAME #
 
