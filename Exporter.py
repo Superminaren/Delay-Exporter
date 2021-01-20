@@ -11,11 +11,11 @@ import configparser
 
 PORT = 8000
 UPDATE_TIME_MINUTES = 60 # Recommended to not update more often than 5 minutes due to limited API Calls
-LOG_LEVEL = 0 #0 = Debug, 1 = Info, 2 = Warnings, 3 = Critical
+LOG_LEVEL = 0 # 0 = Debug, 1 = Info, 2 = Warnings, 3 = Critical
 LOG_LOCATION = "./config.ini" # Config location, defaults
 
 # Arrays of configuration data.
-settings = {"APIKey", "Port", "SiteID", "LogLevel", "ReloadTimeMinutes", "URL"}
+settings = {"APIKey", "Port", "SiteID", "LogLevel", "ReloadTimeMinutes"}
 transportMethods = {"Buses","Trains","Trams","Ships"}
 
 # Metrics for prometheus_client library
@@ -67,7 +67,7 @@ def run():
 def update_exporter():
     __API.update_data()
     for method in transportMethods:
-        delay_time.labels(transportMethod=method).set(__API.get_average_delay(method))
+        delay_time.labels(transportMethod=method).set(__API.get_delay_average(method))
         delay_count.labels(transportMethod=method).inc(__API.get_delay_count(method))
 
 

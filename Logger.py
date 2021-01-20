@@ -12,6 +12,8 @@ class Logger:
         if level>=self.LOG_LEVEL:
             print(self.time.strftime(self.DATE_FORMAT,self.time.gmtime()), ":",logData)
 
+    def set_log_level(self, level):
+        self.LOG_LEVEL = level
     #Debug
     def debug(self, logData):
         self.__log("DEBUG: " + logData, 0 )

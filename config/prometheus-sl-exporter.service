@@ -1,7 +1,8 @@
 [Unit]
 Description=Prometheus SL Delay Exporter
 After=network.target
-StartLimitIntervalSec=0[Service]
+StartLimitIntervalSec=0
+[Service]
 Type=simple
 Restart=on-failure
 RestartSec=1
