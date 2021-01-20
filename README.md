@@ -1,10 +1,10 @@
 # Delay-Exporter
 
-#NOT FINISHED
+ Prometheus exporter for Stockholm County Bus traffic metrics.
 
- Prometheus exporter for Stockholm County Bus traffic
-
- Included is a service file for systemd.
+ Included:
+ - Service file for systemd
+ - 
 
  Requirements:
  - Python 3
@@ -12,12 +12,12 @@
 
 
  Running without installing:
- - Run Exporter.py 
+ - Run **Exporter.py path_to_config**
 
  Install Instructions (Simple)
  - Run **install_auto.sh** as root
  - Verify installation by running **systemctl status prometheus-sl-exporter**
- - Visiting http://<ADDRESS>:8000/ to verify, or running **curl http://localhost:8000/  
+ - Visiting http://ADDRESS:8000/ to verify, or running **curl http://localhost:8000/  
 
  Install instructions (More elaborate):
  - Run **install.sh** as root

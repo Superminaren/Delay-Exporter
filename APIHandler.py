@@ -1,56 +1,69 @@
-# Carl Vargklint 2020-01-18
-# This prometheus exporter is for use with the SL Realtidsinformation 4 API.
+"""This prometheus exporter is for use with the SL Realtidsinformation 4 API."""
+__author__      = "Carl Vargklint"
+
 class APIHandler:
 	from datetime import datetime
-
 	import json
 	import requests
 	import Logger
 
+
 	data = None
 	APIKEY = ""
-	PORT = 8000
 	SITEID = 8254
 	UPDATE_TIME_MINUTES = 60
-	TIMEFORMAT = '%Y-%m-%dT%H:%M:%S'
-
+	TIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 	DELAY_TIME = 60 # Delay time in seconds required for something to be considered delayed.
-	templateURL = "https://api.sl.se/api2/realtimedeparturesV4.json?key=<KEY>&siteid=<SITEID>&timewindow=<TIMEWINDOW>"
-	#URL = "https://api.sl.se/api2/realtimedeparturesV4.json?key=APIKEY&siteid=SITEID&timewindow=60"
-	#URL.replace("APIKEY",APIKEY)
 
-	#URL.replace("SITEID", str(SITEID))
-	URL = "https://uwu.party/testresponse.txt"
+
+	templateURL = "https://api.sl.se/api2/realtimedeparturesV4.json?key=<KEY>&siteid=<SITEID>&timewindow=<TIMEWINDOW>"
+	__URL = "NEEDSTOCHANGE"
+
 
 	#Logging class
 	log = Logger.Logger(0)
-	#Init function to prevent
-	def init(self,apikey, siteid):
-		APIKEY = apikey
-		self.data = self.__get_json_data(siteid)
+
+	# Init function to prevent NoneTypes
+
+	def init(self, config):
+		self.templateURL = config['EXPORTER']['URL']
+		self.APIKEY = config['EXPORTER']['APIKey']
+		self.SITEID = config['EXPORTER']['SiteID']
+		self.UPDATE_TIME_MINUTES = int(config['EXPORTER']['ReloadTimeMinutes'])
+		self.update_url()
+		self.update_data()
+
 
 	#Run update before getting data
-	def update(self, SITE, UPDATE_TIME_MINUTES):
-		self.URL = self.templateURL.replace("<KEY>", self.APIKEY).replace("<SITEID>", str(self.SITEID)).replace("<TIMEWINDOW>", str(self.UPDATE_TIME_MINUTES))
-		print(self.URL)
-		self.log.debug("Updating API Data")
-		self.SITEID=SITE
-		data = self.__get_json_data(self.SITEID)
-		return data
+	def update_data(self):
 
+		self.log.debug("Updating API Data"+"\n URL: "+self.__URL)
+		self.data = self.__get_json_data()
+		return self.data
 
+	def update_url(self):
+		self.__URL = self.templateURL\
+			.replace("<KEY>", str(self.APIKEY))\
+			.replace("<SITEID>", str(self.SITEID))\
+			.replace("<TIMEWINDOW>", str(self.UPDATE_TIME_MINUTES))\
+			.replace("\"","")
+		return self.__URL
 
 	# Parses string timestamp into datetime format for easy comparison
 	def __parse_time(self, t):
-		return self.datetime.strptime(t,self.TIMEFORMAT)
+		return self.datetime.strptime(t,self.TIME_FORMAT)
 
 
 	# Makes a HTTP Request and returns json response.
-	def __get_json_data(self, siteid):
-		self.SITEID = siteid
-		resp = self.requests.get(self.URL)
-		data = resp.text
-		return self.json.loads(data)
+	def __get_json_data(self):
+		print("Get Json Data : ", self.__URL)
+		try:
+			resp = self.requests.get(self.__URL)
+			data = resp.text
+			return self.json.loads(data)
+		except Exception as e:
+			print(e); exit(0)
+
 
 	def __verify_json_data(self,data):
 		if data['StatusCode'] != 0:
@@ -64,15 +77,18 @@ class APIHandler:
 	def get_average_delay(self, transport):
 		count = 0
 		total = 0
+		print(self.data)
 		for x in self.data['ResponseData'][transport]:
 			#print(x)
 			date = self.__parse_time(x['ExpectedDateTime'])-self.__parse_time(x['TimeTabledDateTime'])
 			if (date.seconds>0):
 				count = count + 1
 				total = total + date.seconds
+
 		if count == 0:
 			return 0
 		else:
+			self.log.debug("Average_Delay for "+transport+" is: "+str((total / count)))
 			return total/count
 
 
@@ -83,6 +99,7 @@ class APIHandler:
 			date = self.__parse_time(x['ExpectedDateTime']) - self.__parse_time(x['TimeTabledDateTime'])
 			if (date.seconds > self.DELAY_TIME):
 				count = count + 1
+		self.log.debug("Delays for "+transport+" are: "+str(count))
 		return count
 
 	# Returns the amount of any transport method per hour.
@@ -91,3 +108,4 @@ class APIHandler:
 		for x in self.data['ResponseData'][transport]:
 			count = count + 1
 		return count
+

@@ -10,39 +10,23 @@ import configparser
 #Config variables
 
 PORT = 8000
-SITEID = 8254 #Location ID From "SL Platsinfo" API.
 UPDATE_TIME_MINUTES = 60 # Recommended to not update more often than 5 minutes due to limited API Calls
 LOG_LEVEL = 0 #0 = Debug, 1 = Info, 2 = Warnings, 3 = Critical
-LOG_LOCATION = "./config.ini"
+LOG_LOCATION = "./config.ini" # Config location, defaults
 
-
-settings = {"APIKey", "Port", "SiteID", "LogLevel"}
+# Arrays of configuration data.
+settings = {"APIKey", "Port", "SiteID", "LogLevel", "ReloadTimeMinutes", "URL"}
 transportMethods = {"Buses","Trains","Trams","Ships"}
 
-#Metric names
+# Metrics for prometheus_client library
 delay_time = Gauge('traffic_delay_seconds','Average traffic delay over next 60 minute period', ["transportMethod"])
 delay_count = Counter('traffic_delay_count','Average traffic delay over next 60 minute period', ["transportMethod"])
+#TODO Change all privates to __variables
 
-#Class instances
-API = APIHandler.APIHandler()
-log = Logger.Logger(LOG_LEVEL) #
+# Class instances
+__API = APIHandler.APIHandler()
+log = Logger.Logger(LOG_LEVEL) # Define log level for levels of verbosity
 config = configparser.ConfigParser()  # Defining a config parser for easy config
-
-
-def run():
-    API.init(config['EXPORTER']['APIKey'], SITEID)  # Initialize with config
-    # Start up the server to expose metrics.
-    start_http_server(PORT)
-    log.info("Initialized Prometheus Exporter.")
-    while True:
-        update_exporter() # Fetches data through dataHandler
-        time.sleep(UPDATE_TIME_MINUTES*60) # Sleep for an hour before next update TODO Change value to 3600 for production
-
-def update_exporter():
-    API.update(config['EXPORTER']['SiteID'], UPDATE_TIME_MINUTES)
-    for method in transportMethods:
-        delay_time.labels(transportMethod=method).set(API.get_average_delay(method))
-        delay_count.labels(transportMethod=method).inc(API.get_delay_count(method))
 
 def get_settings():
 
@@ -65,6 +49,26 @@ def get_settings():
     except KeyError as e: # If key is missing or file is not found.
         print(LOG_LOCATION," not found!")
         exit(0)
+
+
+def run():
+
+    # Start up the server to expose metrics.
+    __API.init(config)  # Initialize with json config
+
+    start_http_server(int(config['EXPORTER']['Port']))
+    log.info("Initialized Prometheus Exporter.")
+    while True:
+        update_exporter() # Fetches data through dataHandler
+        time.sleep(UPDATE_TIME_MINUTES*60) # Sleep specified time in config after update TODO Change value to 3600 for production
+
+
+# Updates the prometheus exporter values
+def update_exporter():
+    __API.update_data()
+    for method in transportMethods:
+        delay_time.labels(transportMethod=method).set(__API.get_average_delay(method))
+        delay_count.labels(transportMethod=method).inc(__API.get_delay_count(method))
 
 
 if __name__ == '__main__':

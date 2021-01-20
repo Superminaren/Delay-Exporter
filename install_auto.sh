@@ -24,20 +24,24 @@ echo "COPY $PROJECT_NAME.sh"
 chmod +x $INSTALL_DIR/$PROJECT_NAME #
 
 # Making directory for python scripts
+echo 'MAKE DIRECTORY'
 mkdir $SCRIPT_DIR/$PROJECT_NAME
 
 
 # Copying python scripts to Script folder
+echo 'COPY SCRIPTS'
 cp $PWD/*.py $SCRIPT_DIR/$PROJECT_NAME/
 
 
 # Copying service to systemd
+echo 'COPY SERVICE'
 cp $PWD/config/$PROJECT_NAME-user.service $SERVICE_DIR/$PROJECT_NAME.service
 
-# Copying config to etc
-cp $PWD/config/config.ini $CONFIG_DIR/$PROJECT_NAME.conf
+# Copying config to etc -n to not overwrite if file exists.
+echo 'COPY CONFIG'
+cp -n $PWD/config/config.ini $CONFIG_DIR/$PROJECT_NAME.conf
 
-
+echo "RELOAD SYSTEMD"
 systemctl daemon-reload
 systemctl enable $PROJECT_NAME
 
