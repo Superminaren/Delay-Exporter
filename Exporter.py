@@ -9,7 +9,7 @@ import configparser
 
 #Config variables
 
-PORT = 8000
+PORT = 8000 
 UPDATE_TIME_MINUTES = 60 # Recommended to not update more often than 5 minutes due to limited API Calls
 LOG_LEVEL = 0 # 0 = Debug, 1 = Info, 2 = Warnings, 3 = Critical
 CONFIG_LOCATION = "./config.ini" # Config location, defaults
