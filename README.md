@@ -4,7 +4,7 @@
 
  Included:
  - Service file for systemd
- - 
+ - Config file 
 
  Requirements:
  - Python 3

@@ -12,7 +12,7 @@ import configparser
 PORT = 8000
 UPDATE_TIME_MINUTES = 60 # Recommended to not update more often than 5 minutes due to limited API Calls
 LOG_LEVEL = 0 # 0 = Debug, 1 = Info, 2 = Warnings, 3 = Critical
-LOG_LOCATION = "./config.ini" # Config location, defaults
+CONFIG_LOCATION = "./config.ini" # Config location, defaults
 
 # Arrays of configuration data.
 settings = {"APIKey", "Port", "SiteID", "LogLevel", "ReloadTimeMinutes"}
@@ -32,23 +32,23 @@ def get_settings():
 
     # Changes where to load in config from based off system arguments.
     if len(sys.argv) > 1: #If argument is supplied
-        LOG_LOCATION=sys.argv[1]
-        print(LOG_LOCATION)
+        CONFIG_LOCATION=sys.argv[1]
+        print(CONFIG_LOCATION)
     else:
-        LOG_LOCATION="./config.ini"
+        CONFIG_LOCATION="./config.ini"
 
     config.sections()
-    config.read(LOG_LOCATION)
+    config.read(CONFIG_LOCATION)
     try:
         for var in settings:
             if var not in config['EXPORTER']:
                 log.critical("Missing setting: "+var)
-                exit(0)
+                exit(1)
             else:
                 log.info((var + ": " + config['EXPORTER'][var]))
     except KeyError as e: # If key is missing or file is not found.
-        print(LOG_LOCATION," not found!")
-        exit(0)
+        log.critical(CONFIG_LOCATION+" not found!")
+        exit(1)
 
 
 def run():

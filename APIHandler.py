@@ -65,10 +65,10 @@ class APIHandler:
 		try:
 			resp = self.requests.get(self.__URL)
 			self.data = resp.text
-			return resp.json() 
+			return resp.json()
 		except Exception as e:
 			print(e)
-			exit(0)
+			exit(1)
 
 	# Verify data integrity
 	# TODO Improve checking
