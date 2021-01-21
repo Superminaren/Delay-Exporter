@@ -26,5 +26,8 @@
  - Verify installation by running **systemctl status prometheus-sl-exporter**
  - Visiting http://ADDRESS:8000/ to verify, or running **curl http://localhost:8000/**  
 
- TODO: Fully manual install instructions:
- 
+ TODO: 
+  - Fully manual install instructions
+  - Setting listen address in config
+  - Catch edge cases
+  - 

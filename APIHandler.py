@@ -18,7 +18,7 @@ class APIHandler:
 
 
 	templateURL = "https://api.sl.se/api2/realtimedeparturesV4.json?key=<KEY>&siteid=<SITEID>&timewindow=<TIMEWINDOW>"
-	__URL = "NEEDSTOCHANGE"
+	__URL = ""
 
 
 	#Logging class
@@ -37,6 +37,7 @@ class APIHandler:
 		self.APIKEY = config['EXPORTER']['APIKey']
 		self.SITEID = config['EXPORTER']['SiteID']
 		self.UPDATE_TIME_MINUTES = int(config['EXPORTER']['ReloadTimeMinutes'])
+		#Switch log level
 		self.log.set_log_level(int(config['EXPORTER']['LogLevel']))
 
 		# Insert parameters for API URL
