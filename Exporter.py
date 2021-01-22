@@ -36,7 +36,7 @@ def get_settings():
 
     # Changes where to load in config from based off system arguments.
 
-    if len(sys.argv) > 1:   #If argument is supplied, load config from provided location.
+    if len(sys.argv) > 1:                                                       # If argument is supplied, load config from provided location.
         CONFIG_LOCATION=sys.argv[1]
         log.debug(CONFIG_LOCATION+ " loaded.")
     else:
