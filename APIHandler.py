@@ -118,5 +118,6 @@ class APIHandler:
 		count = 0
 		for x in self.data['ResponseData'][transport]:
 			count = count + 1
+		self.log.debug("Amount of "+transport+" for next 60 minutes are: "+str(count))
 		return count
 

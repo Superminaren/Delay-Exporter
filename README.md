@@ -2,6 +2,14 @@
 
  Prometheus exporter for Stockholm County Bus traffic metrics.
 
+
+# Metrics
+    - traffic_delay_seconds
+    - traffic_delay_count
+    - traffic_count~~~~
+
+# Installation
+
  Included:
  - Service file for systemd
  - Config file 
@@ -29,5 +37,8 @@
  TODO: 
   - Fully manual install instructions
   - Setting listen address in config
-  - Catch edge cases
+  - Catch further edge cases
   - 
+
+ # Configuration
+
