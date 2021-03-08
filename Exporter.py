@@ -77,6 +77,7 @@ def update_exporter():
 
     __API.update_data()
     for method in transportMethods:
+
         traffic_delay_time.labels(transportMethod=method).set(__API.get_delay_average(method))
         traffic_delay_count.labels(transportMethod=method).inc(__API.get_delay_count(method))
         traffic_count.labels(transportMethod=method).inc(__API.get_count(method))
